@@ -80,14 +80,14 @@ class Cron {
       ...data
     };
 
-    let defaultExp = '* * * * * * *'
+    let defaultExp = '* * * * *'
       , expression = defaultExp.split(' ')
-      , startTime = data.startTime ? data.startTime.split(':').slice(0, 3) : []
+      , startTime = data.startTime ? data.startTime.split(':').slice(0, 2) : []
       , days = data.days.map(Cron.getDayOfWeekId).sort( (a, b) => a - b );
 
     // Sets hours, minutes and seconds
     if (startTime.length) {
-      if (startTime.length < 3) {
+      if (startTime.length < 2) {
         startTime.push('00');
       }
 
@@ -114,7 +114,7 @@ class Cron {
         days = days.map( day => Cron.DAYS_MAP[day] )
       }
 
-      expression[5] = days.join(',');
+      expression[4] = days.join(',');
 
       if (options.shorten) {
         expression = Cron.shorten(expression, options);
@@ -139,11 +139,11 @@ class Cron {
    * @method parse
    * @param {string}  expression='* * * * * * *'  - Cron expression to be parsed
   **/
-  static parse(expression = '* * * * * * *') {
-    expression = expression.split(' ').slice(0, 7);
+  static parse(expression = '* * * * *') {
+    expression = expression.split(' ').slice(0, 5);
 
-    let clockUnits = expression.slice(0, 3).map( unit => unit === '*' ? '00' : unit ) // array
-      , dw = expression[5] // string to be parsed yet
+    let clockUnits = expression.slice(0, 2).map( unit => unit === '*' ? '00' : unit ) // array
+      , dw = expression[4] // string to be parsed yet
       , daysOfWeek = [] // array of days after parse
 
     if (dw !== '*') {
@@ -174,7 +174,7 @@ class Cron {
 
     return {
       days: daysOfWeek,
-      startTime: `${clockUnits[2]}:${clockUnits[1]}:${clockUnits[0]}`
+      startTime: `${clockUnits[1]}:${clockUnits[0]}:00`
     };
 
   }
@@ -194,9 +194,9 @@ class Cron {
     let exp = Array.isArray(expression) ? expression : expression.split(' ')
       , canBeShorten = null;
 
-    if ( exp[5] !== '*' && exp[5].indexOf(',') > 0 ) {
+    if ( exp[4] !== '*' && exp[4].indexOf(',') > 0 ) {
         let i = 0
-          , days = exp[5].split(',').map(Cron.getDayOfWeekId);
+          , days = exp[4].split(',').map(Cron.getDayOfWeekId);
 
       if ( !(days || days.length) ) {
         return expression;
@@ -221,7 +221,7 @@ class Cron {
       }
 
       if (canBeShorten) {
-        exp[5] = ( days[0] + '-' + days[days.length - 1] );
+        exp[4] = ( days[0] + '-' + days[days.length - 1] );
         return exp.join(' ');
       }
     }

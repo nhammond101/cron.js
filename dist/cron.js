@@ -119,16 +119,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      data = _extends({}, Cron.DEFAULT_DATA, data);
 
-	      var defaultExp = '* * * * * * *',
+	      var defaultExp = '* * * * *',
 	          expression = defaultExp.split(' '),
-	          startTime = data.startTime ? data.startTime.split(':').slice(0, 3) : [],
+	          startTime = data.startTime ? data.startTime.split(':').slice(0, 2) : [],
 	          days = data.days.map(Cron.getDayOfWeekId).sort(function (a, b) {
 	        return a - b;
 	      });
 
 	      // Sets hours, minutes and seconds
 	      if (startTime.length) {
-	        if (startTime.length < 3) {
+	        if (startTime.length < 2) {
 	          startTime.push('00');
 	        }
 
@@ -157,7 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          });
 	        }
 
-	        expression[5] = days.join(',');
+	        expression[4] = days.join(',');
 
 	        if (options.shorten) {
 	          expression = Cron.shorten(expression, options);
@@ -184,15 +184,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'parse',
 	    value: function parse() {
-	      var expression = arguments.length <= 0 || arguments[0] === undefined ? '* * * * * * *' : arguments[0];
+	      var expression = arguments.length <= 0 || arguments[0] === undefined ? '* * * * *' : arguments[0];
 
-	      expression = expression.split(' ').slice(0, 7);
+	      expression = expression.split(' ').slice(0, 5);
 
-	      var clockUnits = expression.slice(0, 3).map(function (unit) {
+	      var clockUnits = expression.slice(0, 2).map(function (unit) {
 	        return unit === '*' ? '00' : unit;
 	      }),
 	          // array
-	      dw = expression[5],
+	      dw = expression[4],
 	          // string to be parsed yet
 	      daysOfWeek = []; // array of days after parse
 
@@ -222,7 +222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      return {
 	        days: daysOfWeek,
-	        startTime: clockUnits[2] + ':' + clockUnits[1] + ':' + clockUnits[0]
+	        startTime: clockUnits[1] + ':' + clockUnits[0] + ':00'
 	      };
 	    }
 
@@ -240,9 +240,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var exp = Array.isArray(expression) ? expression : expression.split(' '),
 	          canBeShorten = null;
 
-	      if (exp[5] !== '*' && exp[5].indexOf(',') > 0) {
+	      if (exp[4] !== '*' && exp[4].indexOf(',') > 0) {
 	        var i = 0,
-	            days = exp[5].split(',').map(Cron.getDayOfWeekId);
+	            days = exp[4].split(',').map(Cron.getDayOfWeekId);
 
 	        if (!(days || days.length)) {
 	          return expression;
@@ -268,7 +268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        if (canBeShorten) {
-	          exp[5] = days[0] + '-' + days[days.length - 1];
+	          exp[4] = days[0] + '-' + days[days.length - 1];
 	          return exp.join(' ');
 	        }
 	      }

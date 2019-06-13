@@ -12,7 +12,7 @@ describe('# Make', function() {
 
     expect(cron).to.be.an('object');
     expect(cron.expression).to.be.a('string');
-    expect(cron.expression).to.equal('* * 12 * * 1,2,3 *');
+    expect(cron.expression).to.equal('* 12 * * 1,2,3');
   });
 
   it('should make a new Cron expression with shorten days of the week with given data object', function() {
@@ -26,7 +26,7 @@ describe('# Make', function() {
 
     var cron = new Cron(data, options);
 
-    expect(cron.expression).to.equal('* * * * * 1-6 *');
+    expect(cron.expression).to.equal('* * * * 1-6');
   });
 
   it('should accept string days of the week instead of integers and make a new cron Expression', function() {
@@ -42,13 +42,13 @@ describe('# Make', function() {
 
     expect(cron).to.be.an('object');
     expect(cron.expression).to.be.a('string');
-    expect(cron.expression).to.equal('* * * * * MON,TUE,WED *');
+    expect(cron.expression).to.equal('* * * * MON,TUE,WED');
   });
 });
 
 describe('# Parse', function() {
   it('should parse an expression and return data object', function() {
-    var data = Cron.parse('* 30 18 * * 0,1,4,6 *');
+    var data = Cron.parse('30 18 * * 0,1,4,6');
 
     expect(data).to.be.an('object');
     expect(data.days).to.be.an('array');
@@ -60,23 +60,23 @@ describe('# Parse', function() {
   });
 
   it('should parse an expression (with strings representing days of week instead of integers) and return data object', function() {
-    var data = Cron.parse('* 30 18 * * SUN,MON,WED,FRI *');
+    var data = Cron.parse('30 18 * * SUN,MON,WED,FRI');
 
     expect(data).to.be.an('object');
     expect(data.days).to.be.an('array');
     expect(data.startTime).to.be.a('string');
     expect(data.days.length).to.equal(4);
 
-    expect(data.days).to.deep.equal([0,1, 3, 5]);
+    expect(data.days).to.deep.equal([0, 1, 3, 5]);
     expect(data.startTime).to.equal('18:30:00');
   });
 });
 
 describe('# Shorten', function() {
   it('should shorten the days of the week of a given Cron expression', function() {
-    var expression = '* * 12 * * 1,2,3 *'
+    var expression = '* * 12 * 1,2,3 * '
       , shorten = Cron.shorten(expression);
 
-    expect(shorten).to.equal('* * 12 * * 1-3 *');
+    expect(shorten).to.equal('* * 12 * 1-3 * ');
   });
 });
