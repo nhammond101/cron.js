@@ -48,26 +48,26 @@ describe('# Make', function() {
 
 describe('# Parse', function() {
   it('should parse an expression and return data object', function() {
-    var data = Cron.parse('* 30 18 * * 1,4,6 *');
+    var data = Cron.parse('* 30 18 * * 0,1,4,6 *');
 
     expect(data).to.be.an('object');
     expect(data.days).to.be.an('array');
     expect(data.startTime).to.be.a('string');
-    expect(data.days.length).to.equal(3);
+    expect(data.days.length).to.equal(4);
 
-    expect(data.days).to.deep.equal([1, 4, 6]);
+    expect(data.days).to.deep.equal([0,1, 4, 6]);
     expect(data.startTime).to.equal('18:30:00');
   });
 
   it('should parse an expression (with strings representing days of week instead of integers) and return data object', function() {
-    var data = Cron.parse('* 30 18 * * MON,WED,FRI *');
+    var data = Cron.parse('* 30 18 * * SUN,MON,WED,FRI *');
 
     expect(data).to.be.an('object');
     expect(data.days).to.be.an('array');
     expect(data.startTime).to.be.a('string');
-    expect(data.days.length).to.equal(3);
+    expect(data.days.length).to.equal(4);
 
-    expect(data.days).to.deep.equal([1, 3, 5]);
+    expect(data.days).to.deep.equal([0,1, 3, 5]);
     expect(data.startTime).to.equal('18:30:00');
   });
 });

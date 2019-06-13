@@ -52,14 +52,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * Cron Utils
@@ -293,13 +293,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'DAYS_MAP',
 	    get: function get() {
 	      return {
-	        1: 'SUN',
-	        2: 'MON',
-	        3: 'TUE',
-	        4: 'WED',
-	        5: 'THU',
-	        6: 'FRI',
-	        7: 'SAT'
+	        0: 'SUN',
+	        1: 'MON',
+	        2: 'TUE',
+	        3: 'WED',
+	        4: 'THU',
+	        5: 'FRI',
+	        6: 'SAT'
 	      };
 	    }
 	  }, {
@@ -310,7 +310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          keyArr = Object.keys(originalMap);
 
 	      for (var i = 0; i < keyArr.length; i++) {
-	        reverseMap[originalMap[i + 1]] = i + 1;
+	        reverseMap[originalMap[i]] = i;
 	      }
 
 	      return reverseMap;
@@ -331,7 +331,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports['default'] = Cron;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;

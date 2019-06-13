@@ -4,9 +4,10 @@
   "description": "Cron (weekly) expressions parser and generator for JavaScript (browser and server)",
   "main": "./dist/cron.js",
   "dependencies": {
-    "babel": "^5.8.21"
+
   },
   "devDependencies": {
+    "babel": "^5.8.21",
     "babel-core": "^5.8.22",
     "babel-loader": "^5.3.2",
     "chai": "^3.2.0",
